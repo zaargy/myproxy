@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  myproxy:
+    container_name: myproxy
+    image:  traefik:v2.3
+    ports:
+      - "443:443"
+      - "53:53"
+      - "53:53/udp"
+      - "80:80"
+    volumes:
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./dynamic.toml:/etc/traefik/dynamic.toml
+      - ./ssl:/etc/traefik/ssl/
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.https-redirect.entrypoints=web"
+      - "traefik.http.routers.https-redirect.rule=HostRegexp(`{any:.*}`)"
+      - "traefik.http.routers.https-redirect.middlewares=https-redirect"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.middlewares=auth"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.rule=Host(`traefik.thereforsunrise.com`)"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.middlewares.auth.basicauth.users=${BASICAUTH}"
+    env_file:
+      - .env
+    networks:
+      - webgateway
+    restart: always
+
+networks:
+  webgateway:
+    driver: bridge

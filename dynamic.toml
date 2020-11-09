@@ -1,0 +1,11 @@
+[[tls.certificates]]
+  certFile = "/etc/traefik/ssl/certificates/_.thereforsunrise.com.crt"
+  keyFile = "/etc/traefik/ssl/certificates/_.thereforsunrise.com.key"
+
+[[tls.certificates]]
+  certFile = "/etc/traefik/ssl/certificates/thereforsunrise.com.crt"
+  keyFile = "/etc/traefik/ssl/certificates/thereforsunrise.com.key"
+
+[http.middlewares]
+  [http.middlewares.HTTPS-REDIRECT.redirectScheme]
+    scheme = "https"
