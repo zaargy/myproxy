@@ -13,7 +13,7 @@ for domain in $DOMAINS; do
     --email="$EMAIL" \
     --accept-tos \
     --path="/ssl" \
-    --domains="thereforsunrise.com" \
+    --domains="$domain" \
     --dns="linodev4" \
     --dns.resolvers ns1.linode.com \
     "renew"
