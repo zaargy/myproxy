@@ -17,4 +17,4 @@ for domain in $DOMAINS; do
     --dns="linodev4" \
     --dns.resolvers ns1.linode.com \
     "renew"
-fi
+done
